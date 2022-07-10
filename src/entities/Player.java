@@ -2,12 +2,9 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 
 import utilz.Constants.PlayerConstants;
+import utilz.LoadSave;
 
 public class Player extends Entity {
 	private BufferedImage[][] animation;
@@ -17,8 +14,8 @@ public class Player extends Entity {
 	private boolean moving = false, attacking = false;
 	private float playerSpeed = 2.0f;
 
-	public Player(float x, float y) {
-		super(x, y);
+	public Player(float x, float y, int width, int height) {
+		super(x, y, width, height);
 		loadAnimations();
 	}
 
@@ -30,7 +27,7 @@ public class Player extends Entity {
 
 	public void render(Graphics g) {
 		g.drawImage(animation[playerAction][animationIndex], (int) x, (int) y,
-				128, 80, null);
+				width, height, null);
 	}
 
 	private void updateAnimationTick() {
@@ -89,26 +86,13 @@ public class Player extends Entity {
 	}
 
 	private void loadAnimations() {
-		InputStream is = getClass().getResourceAsStream("/player_sprites.png");
+		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-		try {
-			BufferedImage img = ImageIO.read(is);
-
-			animation = new BufferedImage[9][6];
-			for (int j = 0; j < animation.length; j++)
-				for (int i = 0; i < animation[j].length; i++) {
-					animation[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
-				}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+		animation = new BufferedImage[9][6];
+		for (int j = 0; j < animation.length; j++)
+			for (int i = 0; i < animation[j].length; i++) {
+				animation[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
 			}
-		}
 
 	}
 

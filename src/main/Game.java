@@ -3,16 +3,28 @@ package main;
 import java.awt.Graphics;
 
 import entities.Player;
+import levels.LevelManager;
 
 public class Game implements Runnable {
 	@SuppressWarnings("unused")
 	private GameWindow gameWindow;
 	private GamePanel gamePanel;
+
 	private Thread gameThread;
+
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
 
 	private Player player;
+	private LevelManager levelManager;
+
+	public static final int TILE_DEFAULT_SIZE = 32;
+	public static final float SCALE = 2.0f;
+	public static final int TILES_IN_WIDTH = 26;
+	public static final int TILES_IN_HEIGHT = 14;
+	public static final int TILES_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE);
+	public static final int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+	public static final int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
 	public Game() {
 		initClasses();
@@ -25,7 +37,8 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
-		player = new Player(200, 200);
+		player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
+		levelManager = new LevelManager(this);
 	}
 
 	public void startGameLoop() {
@@ -35,9 +48,11 @@ public class Game implements Runnable {
 
 	public void update() {
 		player.update();
+		levelManager.update();
 	}
 
 	public void render(Graphics g) {
+		levelManager.draw(g);
 		player.render(g);
 	}
 

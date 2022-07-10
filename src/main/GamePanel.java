@@ -1,5 +1,8 @@
 package main;
 
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 
@@ -25,10 +28,10 @@ public class GamePanel extends JPanel {
 	}
 
 	private void setPanalSize() {
-		Dimension size = new Dimension(1280, 800);
-		setMinimumSize(size);
+		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 		setPreferredSize(size);
-		setMaximumSize(size);
+		System.out
+				.println("WIDTH :" + GAME_WIDTH + " | HEIGHT :" + GAME_HEIGHT);
 	}
 
 	public void updateGame() {
